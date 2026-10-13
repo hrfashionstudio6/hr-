@@ -1,0 +1,4 @@
+export function localDay(now,timezone){const parts=new Intl.DateTimeFormat('en-US',{timeZone:timezone,year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);const get=t=>parts.find(p=>p.type===t).value;return `${get('year')}-${get('month')}-${get('day')}`;}
+export function arrivalStatus(now,timezone,start){const parts=new Intl.DateTimeFormat('en-GB',{timeZone:timezone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(now);return parts.find(p=>p.type==='hour').value+':'+parts.find(p=>p.type==='minute').value>start?'Late':'Present';}
+export function validZone(zone){try{new Intl.DateTimeFormat('en',{timeZone:zone}).format();return true;}catch{return false;}}
+export function validSchedule(start,end){return /^([01]\d|2[0-3]):[0-5]\d$/.test(start)&&/^([01]\d|2[0-3]):[0-5]\d$/.test(end)&&end>start;}

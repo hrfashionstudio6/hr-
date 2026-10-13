@@ -77,4 +77,3 @@ One HR administrator per workspace; one same-day shift and one attendance record
 
 ## Roman Urdu setup
 ZIP extract karein. Node.js aur MongoDB install/run karein. Dono env example files copy karein, MongoDB URL aur setup key set karein. Root folder mein `npm install`, phir `npm run dev` chalayein. Browser mein localhost:3000 kholen. Pehle HR account banayein, phir employees ke email/password aur duty timings add karein.
-
