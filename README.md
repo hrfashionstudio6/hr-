@@ -66,7 +66,7 @@ npm run build
 ```
 The integration suite starts a disposable MongoDB using mongodb-memory-server; first execution downloads the MongoDB binary and requires network access. It covers first HR setup, employee creation, duplicate email, role isolation, concurrent check-in, checkout, password changes, session revocation and timezone boundaries.
 
-**Verification status:** Dependency installation and the production Next.js build (including TypeScript checks) pass. MongoDB integration tests are being verified separately. A package-lock.json is included for reproducible installs.
+**Verification status:** Dependency installation and the production Next.js build (including TypeScript checks) pass. Both MongoDB integration tests pass. The combined production server smoke test also passes: HTML, API, authentication, secure cookies and database isolation. Run it after a build with `node scripts/smoke-production.mjs`. A package-lock.json is included for reproducible installs.
 
 For production, set `NODE_ENV=production`, use HTTPS, set APP_ORIGIN to the exact frontend origin, and configure API_URL to the private Express endpoint. Secure cookies require HTTPS. Keep the API behind your reverse proxy; it binds to 127.0.0.1 by default. Use an authenticated MongoDB connection and backups. Do not publish `.env` files. Review current framework security patches before exposing the application publicly.
 
@@ -77,4 +77,5 @@ One HR administrator per workspace; one same-day shift and one attendance record
 
 ## Roman Urdu setup
 ZIP extract karein. Node.js aur MongoDB install/run karein. Dono env example files copy karein, MongoDB URL aur setup key set karein. Root folder mein `npm install`, phir `npm run dev` chalayein. Browser mein localhost:3000 kholen. Pehle HR account banayein, phir employees ke email/password aur duty timings add karein.
+
 
