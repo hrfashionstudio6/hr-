@@ -66,14 +66,15 @@ npm run build
 ```
 The integration suite starts a disposable MongoDB using mongodb-memory-server; first execution downloads the MongoDB binary and requires network access. It covers first HR setup, employee creation, duplicate email, role isolation, concurrent check-in, checkout, password changes, session revocation and timezone boundaries.
 
-**Verification status:** Source structure, imports, JSON configuration and ZIP contents were checked. Installation, TypeScript/build and integration tests could not be executed on the delivery computer because Windows Security blocked Node.js. Tests are included but are not claimed to have passed. No lockfile is included because dependency installation could not run; commit the generated package-lock.json after a successful `npm install`.
+**Verification status:** Dependency installation and the production Next.js build (including TypeScript checks) pass. MongoDB integration tests are being verified separately. A package-lock.json is included for reproducible installs.
 
 For production, set `NODE_ENV=production`, use HTTPS, set APP_ORIGIN to the exact frontend origin, and configure API_URL to the private Express endpoint. Secure cookies require HTTPS. Keep the API behind your reverse proxy; it binds to 127.0.0.1 by default. Use an authenticated MongoDB connection and backups. Do not publish `.env` files. Review current framework security patches before exposing the application publicly.
 
-Run `npm start -w backend` and `npm start -w frontend` after building. For separate containers, adapt the API listen address and private service networking deliberately.
+For Hostinger, use the combined production server: configure root environment variables, run `npm run build`, then `npm start`. See HOSTINGER.md. Both development and production explicitly use the isolated `attendly_hr` database. The original separate frontend/backend start commands are also available for self-managed installations.
 
 ## Current scope
 One HR administrator per workspace; one same-day shift and one attendance record per employee per day. Leave, holidays, payroll, breaks, biometric integration, overnight shift scheduling, manual attendance corrections and email password recovery are not implemented. HR can reset employee passwords; administrator credential recovery is a server-admin task. All history is loaded per account in this version, so add server pagination before very large rollouts.
 
 ## Roman Urdu setup
 ZIP extract karein. Node.js aur MongoDB install/run karein. Dono env example files copy karein, MongoDB URL aur setup key set karein. Root folder mein `npm install`, phir `npm run dev` chalayein. Browser mein localhost:3000 kholen. Pehle HR account banayein, phir employees ke email/password aur duty timings add karein.
+
