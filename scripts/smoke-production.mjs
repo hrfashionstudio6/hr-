@@ -15,9 +15,13 @@ const origin = `http://127.0.0.1:${port}`;
 const mongo = await MongoMemoryServer.create();
 const connection = await mongoose.createConnection(mongo.getUri('existing_fashion')).asPromise();
 await connection.db.collection('sentinel').insertOne({untouched: true});
-const child = spawn(process.execPath, ['server.mjs'], {
+const vercelMode = process.argv.includes('--vercel');
+const serverArgs = vercelMode
+  ? ['node_modules/next/dist/bin/next', 'start', 'frontend', '-p', String(port)]
+  : ['server.mjs'];
+const child = spawn(process.execPath, serverArgs, {
   cwd: fileURLToPath(new URL('../', import.meta.url)),
-  env: {...process.env, NODE_ENV: 'production', PORT: String(port), APP_ORIGIN: origin,
+  env: {...process.env, ...(vercelMode ? {VERCEL: '1'} : {}), NODE_ENV: 'production', PORT: String(port), APP_ORIGIN: origin,
     MONGODB_URI: mongo.getUri('existing_fashion'), SETUP_KEY: 'smoke-test-only-not-a-production-secret'},
   stdio: ['ignore', 'pipe', 'pipe'],
 });
