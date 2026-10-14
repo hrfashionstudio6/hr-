@@ -13,14 +13,18 @@ export default async function handler(req, res) {
     }
     if (!connection) {
       connection = mongoose.connect(process.env.MONGODB_URI, {
-        dbName: 'attendly_hr', maxPoolSize: 5, serverSelectionTimeoutMS: 10000,
+        dbName: 'attendly_hr', maxPoolSize: 5, serverSelectionTimeoutMS: 30000, family: 4,
       }).then(async () => {
         await Promise.all([Workspace.init(), Employee.init(), Attendance.init(), Session.init()]);
       }).catch(error => {connection = undefined; throw error;});
     }
     await connection;
     return app(req, res);
-  } catch {
+  } catch (error) {
+    console.error('Database connection failed', {name: error.name, code: error.code,
+      reason: error.reason?.type, servers: error.reason?.servers ?
+        [...error.reason.servers.values()].map(s => ({type:s.type, error:s.error?.name, code:s.error?.code,
+          detail:s.error?.message?.replace(/mongodb(?:\+srv)?:\/\/[^\s]+/g, '[redacted]')})) : undefined});
     return res.status(503).json({error: 'Database unavailable. Please try again.'});
   }
 }
